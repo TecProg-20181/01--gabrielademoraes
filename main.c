@@ -18,17 +18,11 @@ typedef struct properties_image {
 
 
 int max(int a, int b) {
-    if (a > b)
-        return a;
-    return b;
+    (a > b) ? a : b;
 }
 
 int pixel_igual(Pixel p1, Pixel p2) {
-    if (p1.red == p2.red &&
-        p1.green == p2.green &&
-        p1.blue == p2.blue)
-        return 1;
-    return 0;
+    (p1.red == p2.red && p1.green == p2.green && p1.blue == p2.blue) ? 1 : 0;
 }
 
 
@@ -59,10 +53,11 @@ void blur(unsigned int height, unsigned short int pixel[512][512][3], int T, uns
         for (unsigned int j = 0; j < width; ++j) {
             Pixel media = {0, 0, 0};
 
-            int menor_height = (height - 1 > i + T/2) ? i + T/2 : height - 1;
-            int min_width = (width - 1 > j + T/2) ? j + T/2 : width - 1;
-            for(int x = (0 > i - T/2 ? 0 : i - T/2); x <= menor_height; ++x) {
-                for(int y = (0 > j - T/2 ? 0 : j - T/2); y <= min_width; ++y) {
+            int menor_height = (height - 1 > i + T/2) ? (i + T/2) : (height - 1);
+            int min_width = (width - 1 > j + T/2) ? (j + T/2) : (width - 1);
+
+            for(int x = ((0 > i - T/2) ? 0 : (i - T/2)); x <= menor_height; ++x) {
+                for(int y = ((0 > j - T/2) ? 0 : (j - T/2)); y <= min_width; ++y) {
                     media.red += pixel[x][y][0];
                     media.green += pixel[x][y][1];
                     media.blue += pixel[x][y][2];
@@ -205,15 +200,13 @@ int main() {
 
                 int width = img.width, height = img.height;
 
-                if (horizontal == 1) width /= 2;
-                else height /= 2;
+                (horizontal == 1) ? (width /= 2) : (height /= 2);
 
                 for (int i2 = 0; i2 < height; ++i2) {
                     for (int j = 0; j < width; ++j) {
                         int x = i2, y = j;
 
-                        if (horizontal == 1) y = img.width - 1 - j;
-                        else x = img.height - 1 - i2;
+                        (horizontal == 1) ? (y = img.width - 1 - j) : (x = img.height - 1 - i2);
 
                         Pixel aux1;
                         aux1.red = img.pixel[i2][j][0];
