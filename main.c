@@ -1,12 +1,12 @@
 #include <stdio.h>
 
-typedef struct _pixel {
+typedef struct properties_pixel {
     unsigned short int r;
     unsigned short int g;
     unsigned short int b;
 } Pixel;
 
-typedef struct _image {
+typedef struct properties_image {
     // [width][height][rgb]
     // 0 -> r
     // 1 -> g
