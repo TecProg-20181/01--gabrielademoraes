@@ -16,16 +16,6 @@ typedef struct properties_image {
     unsigned int height;
 } Image;
 
-
-int max(int a, int b) {
-    (a > b) ? a : b;
-}
-
-int pixel_igual(Pixel p1, Pixel p2) {
-    (p1.red == p2.red && p1.green == p2.green && p1.blue == p2.blue) ? 1 : 0;
-}
-
-
 Image escala_de_cinza(Image img) {
     /*for (unsigned int i = 0; i < img.h; ++i) {
         for (unsigned int j = 0; j < img.w; ++j) {
