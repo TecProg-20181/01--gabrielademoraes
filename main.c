@@ -16,6 +16,8 @@ typedef struct properties_image {
 	unsigned int height;
 } Image;
 
+void printImage(Image);
+Image readImage(Image);
 int min(int, int);
 int max(int, int);
 Image gray_scale(Image);
@@ -32,16 +34,7 @@ int main() {
 	char image_type[4];
 	scanf("%s", image_type);
 
-	// read width, height and color of image
-	int max_color;
-	scanf("%u %u %d", &img.width, &img.height, &max_color);
-
-	// read all pixels of image
-	for(unsigned int i = 0; i < img.height; ++i) {
-		for(unsigned int j = 0; j < img.width; ++j) {
-			scanf("%hu %hu %hu", &img.pixel[i][j].red, &img.pixel[i][j].green, &img.pixel[i][j].blue);
-		}
-	}
+	img = readImage(img);
 
 	int n_options;
 	scanf("%d", &n_options);
@@ -95,7 +88,26 @@ int main() {
 
 		}
 	}
+	printImage(img);
 
+	return 0;
+}
+
+Image readImage(Image img) {
+	// read width, height and color of image
+	int max_color;
+	scanf("%u %u %d", &img.width, &img.height, &max_color);
+
+	// read all pixels of image
+	for(unsigned int i = 0; i < img.height; ++i) {
+		for(unsigned int j = 0; j < img.width; ++j) {
+			scanf("%hu %hu %hu", &img.pixel[i][j].red, &img.pixel[i][j].green, &img.pixel[i][j].blue);
+		}
+	}
+	return img;
+}
+
+void printImage(Image img) {
 	// print type of image
 	printf("P3\n");
 	// print width height and color of image
@@ -108,15 +120,14 @@ int main() {
 		}
 		printf("\n");
 	}
-	return 0;
 }
 
-int min(int first_term, int second_term) {
-		return (first_term < second_term) ? first_term : second_term;
+int min(int a, int b) {
+		return (a < b) ? a : b;
 }
 
-int max(int first_term, int second_term) {
-		return (first_term > second_term) ? first_term : second_term;
+int max(int a, int b) {
+		return (a > b) ? a : b;
 }
 
 Image gray_scale(Image img) {
