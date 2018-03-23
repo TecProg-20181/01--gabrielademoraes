@@ -16,6 +16,100 @@ typedef struct properties_image {
 	unsigned int height;
 } Image;
 
+int min (int, int);
+Image gray_scale(Image);
+Image sepia(Image);
+Image blur(Image, int);
+Image rotate_90degrees_right(Image);
+Image mirroring(Image, int);
+Image color_inversion(Image);
+Image crop_picture(Image, int, int, int, int);
+
+int main() {
+	Image img;
+	// read type of image
+	char image_type[4];
+	scanf("%s", image_type);
+
+	// read width, height and color of image
+	int max_color;
+	scanf("%u %u %d", &img.width, &img.height, &max_color);
+
+	// read all pixels of image
+	for(unsigned int i = 0; i < img.height; ++i) {
+		for(unsigned int j = 0; j < img.width; ++j) {
+			scanf("%hu %hu %hu", &img.pixel[i][j].red, &img.pixel[i][j].green, &img.pixel[i][j].blue);
+		}
+	}
+
+	int n_options;
+	scanf("%d", &n_options);
+
+	for(int i = 0; i < n_options; ++i) {
+		int option;
+		scanf("%d", &option);
+
+		switch(option) {
+			case 1: { // Gray Scale
+				img = gray_scale(img);
+				break;
+			}
+			case 2: { // Sepia
+				img = sepia(img);
+				break;
+			}
+			case 3: { // Blur
+				int blur_size = 0;
+				scanf("%d", &blur_size);
+				img = blur(img, blur_size);
+				break;
+			}
+			case 4: { // Rotation
+				int number_of_times = 0;
+				scanf("%d", &number_of_times);
+				number_of_times %= 4;
+				for(int j = 0; j < number_of_times; ++j) {
+					img = rotate_90degrees_right(img);
+				}
+				break;
+			}
+			case 5: { // Mirroring
+				int horizontal = 0;
+				scanf("%d", &horizontal);
+				img = mirroring(img, horizontal);
+				break;
+			}
+			case 6: { // Color Inversion
+				img = color_inversion(img);
+				break;
+			}
+			case 7: { // Crop picture
+				int x, y;
+				scanf("%d %d", &x, &y);
+				int width, height;
+				scanf("%d %d", &width, &height);
+				img = crop_picture(img, x, y, width, height);
+				break;
+			}
+
+		}
+	}
+
+	// print type of image
+	printf("P3\n");
+	// print width height and color of image
+	printf("%u %u\n255\n", img.width, img.height);
+
+	// print pixels of image
+	for(unsigned int i = 0; i < img.height; ++i) {
+		for(unsigned int j = 0; j < img.width; ++j) {
+			printf("%hu %hu %hu ", img.pixel[i][j].red, img.pixel[i][j].green, img.pixel[i][j].blue);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+
 int min(int first_term, int second_term) {
 		return (first_term < second_term) ? first_term : second_term;
 }
@@ -34,7 +128,7 @@ Image gray_scale(Image img) {
 	return img;
 }
 
-Image sepia(Image img){
+Image sepia(Image img) {
 	for(unsigned int x = 0; x < img.height; ++x) {
 		for(unsigned int j = 0; j < img.width; ++j) {
 			unsigned short int pixel[3];
@@ -159,89 +253,4 @@ Image crop_picture(Image img, int x, int y, int width, int height) {
 		}
 	}
 	return cropped;
-}
-
-int main() {
-	Image img;
-	// read type of image
-	char image_type[4];
-	scanf("%s", image_type);
-
-	// read width, height and color of image
-	int max_color;
-	scanf("%u %u %d", &img.width, &img.height, &max_color);
-
-	// read all pixels of image
-	for(unsigned int i = 0; i < img.height; ++i) {
-		for(unsigned int j = 0; j < img.width; ++j) {
-			scanf("%hu %hu %hu", &img.pixel[i][j].red, &img.pixel[i][j].green, &img.pixel[i][j].blue);
-		}
-	}
-
-	int n_options;
-	scanf("%d", &n_options);
-
-	for(int i = 0; i < n_options; ++i) {
-		int option;
-		scanf("%d", &option);
-
-		switch(option) {
-			case 1: { // Gray Scale
-				img = gray_scale(img);
-				break;
-			}
-			case 2: { // Sepia
-				img = sepia(img);
-				break;
-			}
-			case 3: { // Blur
-				int blur_size = 0;
-				scanf("%d", &blur_size);
-				img = blur(img, blur_size);
-				break;
-			}
-			case 4: { // Rotation
-				int number_of_times = 0;
-				scanf("%d", &number_of_times);
-				number_of_times %= 4;
-				for(int j = 0; j < number_of_times; ++j) {
-					img = rotate_90degrees_right(img);
-				}
-				break;
-			}
-			case 5: { // Mirroring
-				int horizontal = 0;
-				scanf("%d", &horizontal);
-				img = mirroring(img, horizontal);
-				break;
-			}
-			case 6: { // Color Inversion
-				img = color_inversion(img);
-				break;
-			}
-			case 7: { // Crop picture
-				int x, y;
-				scanf("%d %d", &x, &y);
-				int width, height;
-				scanf("%d %d", &width, &height);
-				img = crop_picture(img, x, y, width, height);
-				break;
-			}
-
-		}
-	}
-
-	// print type of image
-	printf("P3\n");
-	// print width height and color of image
-	printf("%u %u\n255\n", img.width, img.height);
-
-	// print pixels of image
-	for(unsigned int i = 0; i < img.height; ++i) {
-		for(unsigned int j = 0; j < img.width; ++j) {
-			printf("%hu %hu %hu ", img.pixel[i][j].red, img.pixel[i][j].green, img.pixel[i][j].blue);
-		}
-		printf("\n");
-	}
-	return 0;
 }
