@@ -16,7 +16,8 @@ typedef struct properties_image {
 	unsigned int height;
 } Image;
 
-int min (int, int);
+int min(int, int);
+int max(int, int);
 Image gray_scale(Image);
 Image sepia(Image);
 Image blur(Image, int);
@@ -114,6 +115,10 @@ int min(int first_term, int second_term) {
 		return (first_term < second_term) ? first_term : second_term;
 }
 
+int max(int first_term, int second_term) {
+		return (first_term > second_term) ? first_term : second_term;
+}
+
 Image gray_scale(Image img) {
 	for(unsigned int i = 0; i < img.height; ++i) {
 		for(unsigned int j = 0; j < img.width; ++j) {
@@ -161,8 +166,8 @@ Image blur(Image img, int blur_size) {
 			int min_height = min((img.height -1), (i + blur_size/2));
 			int min_width = min((img.width -1), (j + blur_size/2));
 
-			for(unsigned int x = ((0 > i - blur_size/2) ? 0 : (i - blur_size/2)); x <= min_height; ++x) {
-				for(unsigned int y = ((0 > j - blur_size/2) ? 0 : (j - blur_size/2)); y <= min_width; ++y) {
+			for(unsigned int x = max(0,(i - blur_size/2)); x <= min_height; ++x) {
+				for(unsigned int y = max(0,(j - blur_size/2)); y <= min_width; ++y) {
 					average.red += img.pixel[x][y].red;
 					average.green += img.pixel[x][y].green;
 					average.blue += img.pixel[x][y].blue;
